@@ -1,0 +1,27 @@
+{
+  "name": "@crud-kata/eslint-base",
+  "version": "0.1.2",
+  "description": "Adds eslint rules for JS/TS for the crud-kata",
+  "author": "codefreeze",
+  "main": "index.mjs",
+  "files": [
+    "index.mjs",
+    "rules",
+    "configs"
+  ],
+  "exports": {
+    ".": "./index.mjs",
+    "./ts": "./configs/ts.mjs",
+    "./js": "./configs/js.mjs"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@stylistic/eslint-plugin": "^2.6.2",
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-mocha": "^10.5.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "typescript-eslint": "^8.0.1"
+  }
+}
