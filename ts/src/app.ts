@@ -20,9 +20,9 @@ export const startApplication: () => Promise<http.Server> = async () => {
         addSession(_session: Session): Promise<void> {
             return Promise.resolve(undefined);
         }
-
     };
     const createsSessions: CreatesSessions = new RepositoryAwareSessions( sessionRepository);
+
     sessionRoutes(router, createsSessions);
 
     app.use(router)
