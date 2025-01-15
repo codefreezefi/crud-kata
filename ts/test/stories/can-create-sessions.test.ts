@@ -22,9 +22,6 @@ describe('Magic', () => {
     })
 
     it('can create a session', async () => {
-        // setup the database to be empty
-         // -> I should be able to start the application with my fake DB
-        // POST call to create a session with session details
         const id = v4();
         const sessionInformation = {title: 'First session', id}
         await request(app)
@@ -35,7 +32,6 @@ describe('Magic', () => {
             .expect(201)
             .expect('location', `/session/${id}`)
 
-        // Verify by Getting list of sessions and seeing it.
         await request(app)
             .get('/session/${id}')
             .expect(200)
