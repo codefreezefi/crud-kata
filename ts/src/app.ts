@@ -2,8 +2,9 @@ import * as http from "node:http"
 import express, {Router} from 'express'
 import bodyParser from "body-parser";
 import {sessionRoutes} from "./conference-planning/controllers.js";
-import type {CreatesSessions, Session, SessionRepository} from "./domain/session.types.js";
+import type {SessionRepository} from "./domain/session.types.js";
 import {RepositoryAwareSessions} from "./conference-planning/repository-aware.sessions.js";
+import {InMemorySessionRepository} from "./conference-planning/in-memory-session-repository.js";
 
 
 export const startApplication: () => Promise<http.Server> = async () => {
@@ -16,14 +17,10 @@ export const startApplication: () => Promise<http.Server> = async () => {
         response.status(200).send('OK')
     })
 
-    const sessionRepository: SessionRepository = {
-        addSession(_session: Session): Promise<void> {
-            return Promise.resolve(undefined);
-        }
-    };
-    const createsSessions: CreatesSessions = new RepositoryAwareSessions( sessionRepository);
+    const sessionRepository: SessionRepository = new InMemorySessionRepository();
+    const createsSessions = new RepositoryAwareSessions(sessionRepository);
 
-    sessionRoutes(router, createsSessions);
+    sessionRoutes(router, createsSessions, createsSessions);
 
     app.use(router)
 

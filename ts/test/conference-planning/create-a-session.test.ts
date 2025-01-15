@@ -9,10 +9,28 @@ import {RepositoryAwareSessions} from "../../src/conference-planning/repository-
 use(sinonChai)
 use(chaiPromised)
 
+function throwsError(message: string) {
+    return () => {
+        throw new Error(message)
+    };
+}
+
+const fakeSessionRepositoryWith = (fakeWith: Partial<SessionRepository>): SessionRepository => {
+    const repository: SessionRepository = {
+        addSession: throwsError('unexpected call'),
+        findAll: throwsError('unexpected call'),
+        findById: throwsError('unexpected call'),
+        ...fakeWith
+    }
+    return repository;
+};
+
 describe('Creating a session', () => {
 
     it('creates a session', () => {
-        const repository: SessionRepository = {addSession: sinon.spy()}
+        const repository = fakeSessionRepositoryWith({
+            addSession: sinon.spy()
+        });
         const service: CreatesSessions = new RepositoryAwareSessions(repository)
 
         const session: Session = {
@@ -26,7 +44,9 @@ describe('Creating a session', () => {
     })
 
     it('has a min length of a title', async () => {
-        const repository: SessionRepository = {addSession: sinon.spy()}
+        const repository = fakeSessionRepositoryWith({
+            addSession: sinon.spy()
+        });
         const service: CreatesSessions = new RepositoryAwareSessions(repository)
 
         const fn: () => Promise<void> = async () => service.createASession({title: 'foobar', id: 'any id'});

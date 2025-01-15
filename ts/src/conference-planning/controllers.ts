@@ -1,20 +1,27 @@
 import express, {type Router} from "express";
-import type {CreatesSessions} from "../domain/session.types.js";
+import type {CreatesSessions, FindsSessions} from "../domain/session.types.js";
 import {looksLikeASession} from "../domain/session-type-assertions.js";
 import {SessionError} from "../domain/session.errors.js";
 
-let session: { title: string, id: string } | undefined = undefined
-
-export const sessionRoutes = (router: Router, createsSessions: CreatesSessions) => {
+export const sessionRoutes = (router: Router, createsSessions: CreatesSessions, findsSessions: FindsSessions) => {
     router.post('/sessions', addASessionHandler(createsSessions))
 
-    router.get('/session/:id', (_req, res) => {
-        res.status(200).send(session)
-    })
+    router.get('/session/:id', findASessionHandler(findsSessions))
+};
+export const findASessionHandler: (x: FindsSessions) => express.RequestHandler = findsSessions => async (req, res) => {
+    let id = req.params.id;
+    // TODO: AkS: Add some tests
+    if(id){
+        const s = await findsSessions.findById(id)
+        res.status(200).send(s)
+        return
+    }
+
+    res.status(400).send("missing param")
 };
 
 export const addASessionHandler: (x: CreatesSessions) => express.RequestHandler = (service: CreatesSessions) => async (req, res) => {
-    session = req.body
+    const session = req.body
     if (!looksLikeASession(session)) {
         res.status(400).send('body does not look like a session')
     } else {

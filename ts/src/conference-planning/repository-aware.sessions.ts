@@ -1,7 +1,7 @@
-import type {CreatesSessions, Session, SessionRepository} from "../domain/session.types.js";
+import type {CreatesSessions, FindsSessions, Session, SessionRepository} from "../domain/session.types.js";
 import {SessionError} from "../domain/session.errors.js";
 
-export class RepositoryAwareSessions implements CreatesSessions {
+export class RepositoryAwareSessions implements CreatesSessions, FindsSessions {
     constructor(private readonly sessionRepository: SessionRepository) {
     }
 
@@ -10,5 +10,11 @@ export class RepositoryAwareSessions implements CreatesSessions {
             throw new SessionError("Session Validation")
         }
         await this.sessionRepository.addSession(session)
+    }
+    async findById(id: string): Promise<Session> {
+       return this.sessionRepository.findById(id)
+    }
+    async findAll(): Promise<Session[]>{
+        return this.sessionRepository.findAll()
     }
 }

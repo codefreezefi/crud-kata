@@ -33,7 +33,7 @@ describe('Magic', () => {
             .expect('location', `/session/${id}`)
 
         await request(app)
-            .get('/session/${id}')
+            .get(`/session/${id}`)
             .expect(200)
             .expect(sessionInformation)
     })
