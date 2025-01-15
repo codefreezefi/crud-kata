@@ -1,13 +1,13 @@
 export interface ApplicationError {
-    toReturnCode: () => number
+  toReturnCode: () => number
 }
 
 export class SessionError extends Error implements ApplicationError {
-    constructor(message: string) {
-        super(message);
-    }
+  constructor(message: string) {
+    super(message)
+  }
 
-    toReturnCode(): number {
-        return 400
-    };
+  toReturnCode(): number {
+    return 400
+  };
 }

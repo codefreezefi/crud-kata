@@ -45,7 +45,7 @@ describe('using sinon', () => {
   describe('using mocks/spies', () => {
     it('ref', () => {
       class MyApiClass {
-        method( _: number ) {
+        method( _: number ) { // eslint-disable-line typescript-eslint/no-unused-vars
           /* no-op */
         }
       }
