@@ -1,5 +1,5 @@
 import {expect} from "chai"
-import {looksLikeASession} from "../../src/domain/session-type-assertions.js"
+import {looksLikeASession} from "../../../src/conference-planning/domain/session-type-assertions.js"
 
 describe('SessionTypeAssertions', () => {
   it('not if totally wrong type', () => {

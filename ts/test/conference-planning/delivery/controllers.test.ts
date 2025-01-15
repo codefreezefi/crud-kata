@@ -1,10 +1,10 @@
-import type {CreatesSessions, FindsSessions, Session} from "../../src/domain/session.types.js"
+import type {CreatesSessions, FindsSessions, Session} from "../../../src/conference-planning/domain/session.types.js"
 import sinon, {stub} from "sinon"
 import {expect} from "chai"
 
-import {addASessionHandler, findASessionHandler} from "../../src/conference-planning/controllers.js"
+import {addASessionHandler, findASessionHandler} from "../../../src/conference-planning/delivery/controllers.js"
 import express from "express"
-import {SessionError} from "../../src/domain/session.errors.js"
+import {SessionError} from "../../../src/conference-planning/domain/errors/session.errors.js"
 
 describe('conference-planning controller', () => {
   const sessionInfo: Session = {title: 'valid title', id: 'valid-id'}
@@ -54,7 +54,7 @@ describe('conference-planning controller', () => {
     it('can find a session', async () => {
       responseLike = fakeResponseToFake()
 
-      const x = {
+      const request = {
         params: {id: "valid-id"}
       } as unknown as express.Request
 
@@ -62,7 +62,7 @@ describe('conference-planning controller', () => {
         findAll: () => Promise.resolve([]),
         findById: (/* _id: string */) => Promise.resolve(sessionInfo)
       }
-      await findASessionHandler(sessionRepository)(x, responseLike, noop)
+      await findASessionHandler(sessionRepository)(request, responseLike, noop)
 
       expect(responseLike.status).to.have.been.calledWith(200)
       expect(responseLike.send).to.have.been.calledWith(sessionInfo)
@@ -87,6 +87,20 @@ describe('conference-planning controller', () => {
       await sessionHandler(requestWithASessionBody, responseLike, noop)
 
       expect(responseLike.status).to.have.been.calledWith(405)
+    })
+
+    it('return error status from custom error', async () => {
+      const request = {
+        params: {id: "valid-id"}
+      } as unknown as express.Request
+
+      const sessionRepository: FindsSessions = {
+        findAll: () => Promise.resolve([]),
+        findById: (/* _id: string */) => { throw new Error("any random error")}
+      }
+      await findASessionHandler(sessionRepository)(request, responseLike, noop)
+
+      expect(responseLike.status).to.have.been.calledWith(500)
     })
   })
 })

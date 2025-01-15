@@ -1,10 +1,10 @@
-import type {CreatesSessions, Session, SessionRepository} from "../../src/domain/session.types.js"
+import type {CreatesSessions, Session, SessionRepository} from "../../../../src/conference-planning/domain/session.types.js"
 import {expect, use} from "chai"
 import sinonChai from 'sinon-chai'
 import chaiPromised from 'chai-as-promised'
 import sinon from "sinon"
-import {SessionError} from "../../src/domain/session.errors.js"
-import {RepositoryAwareSessions} from "../../src/conference-planning/repository-aware.sessions.js"
+import {SessionError} from "../../../../src/conference-planning/domain/errors/session.errors.js"
+import {RepositoryAwareSessions} from "../../../../src/conference-planning/domain/repository-aware.sessions.js"
 
 use(sinonChai)
 use(chaiPromised)

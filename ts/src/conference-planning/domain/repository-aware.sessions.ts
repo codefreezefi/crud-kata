@@ -1,5 +1,5 @@
-import type {CreatesSessions, FindsSessions, Session, SessionRepository} from "../domain/session.types.js"
-import {SessionError} from "../domain/session.errors.js"
+import type {CreatesSessions, FindsSessions, Session, SessionRepository} from "./session.types.js"
+import {SessionError} from "./errors/session.errors.js"
 
 export class RepositoryAwareSessions implements CreatesSessions, FindsSessions {
   constructor(private readonly sessionRepository: SessionRepository) {

@@ -1,13 +1,11 @@
 import * as http from "node:http"
 import express, {Router} from 'express'
 import bodyParser from "body-parser"
-import {sessionRoutes} from "./conference-planning/controllers.js"
-import type {SessionRepository} from "./domain/session.types.js"
-import {RepositoryAwareSessions} from "./conference-planning/repository-aware.sessions.js"
-import {InMemorySessionRepository} from "./conference-planning/in-memory-session-repository.js"
+import {sessionRoutes} from "./conference-planning/delivery/controllers.js"
+import type {SessionRepository} from "./conference-planning/domain/session.types.js"
+import {RepositoryAwareSessions} from "./conference-planning/domain/repository-aware.sessions.js"
 
-
-export const startApplication: () => Promise<http.Server> = async () => {
+export const startApplication: (r: SessionRepository) => Promise<http.Server> = async sessionRepository => {
   const app = express()
   const router: Router = Router()
 
@@ -17,7 +15,6 @@ export const startApplication: () => Promise<http.Server> = async () => {
     response.status(200).send('OK')
   })
 
-  const sessionRepository: SessionRepository = new InMemorySessionRepository()
   const createsSessions = new RepositoryAwareSessions(sessionRepository)
 
   sessionRoutes(router, createsSessions, createsSessions)

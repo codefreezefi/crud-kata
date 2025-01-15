@@ -2,17 +2,24 @@ import {v4} from 'uuid'
 import request from "supertest"
 import * as http from "node:http"
 import {startApplication} from '../../src/app.js'
+import {ErasableInMemorySessionRepository} from "./fakes/erasable-in-memory-session-repository.js";
 
 describe('Magic', () => {
 
   let app: http.Server
+  let sessionRepository: ErasableInMemorySessionRepository;
 
   before(async () => {
-    app = await startApplication()
+    sessionRepository = new ErasableInMemorySessionRepository();
+    app = await startApplication(sessionRepository)
   })
 
   after(async () => {
     app.close()
+  })
+
+  afterEach(async () => {
+    sessionRepository.erase()
   })
 
   it('can start the application', async () => {
@@ -37,4 +44,5 @@ describe('Magic', () => {
       .expect(200)
       .expect(sessionInformation)
   })
+
 })
