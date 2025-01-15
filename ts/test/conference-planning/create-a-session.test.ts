@@ -4,21 +4,10 @@ import sinonChai from 'sinon-chai'
 import chaiPromised from 'chai-as-promised'
 import sinon from "sinon";
 import {SessionError} from "../../src/domain/session.errors.js";
+import {RepositoryAwareSessions} from "../../src/conference-planning/repository-aware.sessions.js";
 
 use(sinonChai)
 use(chaiPromised)
-
-class RepositoryAwareSessions implements CreatesSessions {
-    constructor(private readonly sessionRepository: SessionRepository) {
-    }
-
-    async createASession(session: Session): Promise<void> {
-        if(session.title.length <= 6){
-            throw new SessionError("Session Validation")
-        }
-        await this.sessionRepository.addSession(session)
-    }
-}
 
 describe('Creating a session', () => {
 
