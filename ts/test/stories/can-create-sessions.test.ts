@@ -2,15 +2,16 @@ import {v4} from 'uuid'
 import request from "supertest"
 import * as http from "node:http"
 import {startApplication} from '../../src/app.js'
-import {ErasableInMemorySessionRepository} from "./fakes/erasable-in-memory-session-repository.js";
+import {ErasableInMemorySessionRepository} from "./fakes/erasable-in-memory-session-repository.js"
+import type {Session} from "../../src/conference-planning/domain/session.types.js"
 
 describe('Magic', () => {
 
   let app: http.Server
-  let sessionRepository: ErasableInMemorySessionRepository;
+  let sessionRepository: ErasableInMemorySessionRepository
 
   before(async () => {
-    sessionRepository = new ErasableInMemorySessionRepository();
+    sessionRepository = new ErasableInMemorySessionRepository()
     app = await startApplication(sessionRepository)
   })
 
@@ -30,7 +31,7 @@ describe('Magic', () => {
 
   it('can create a session', async () => {
     const id = v4()
-    const sessionInformation = {title: 'First session', id}
+    const sessionInformation: Session = {title: 'First session', id}
     await request(app)
       .post('/sessions')
       .send(sessionInformation)

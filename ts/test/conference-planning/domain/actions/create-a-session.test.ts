@@ -1,4 +1,8 @@
-import type {CreatesSessions, Session, SessionRepository} from "../../../../src/conference-planning/domain/session.types.js"
+import type {
+  CreatesSessions,
+  Session,
+  SessionRepository
+} from "../../../../src/conference-planning/domain/session.types.js"
 import {expect, use} from "chai"
 import sinonChai from 'sinon-chai'
 import chaiPromised from 'chai-as-promised'

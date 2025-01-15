@@ -89,14 +89,16 @@ describe('conference-planning controller', () => {
       expect(responseLike.status).to.have.been.calledWith(405)
     })
 
-    it('return error status from custom error', async () => {
+    it('handles exceptions from findSessionHandler', async () => {
       const request = {
         params: {id: "valid-id"}
       } as unknown as express.Request
 
       const sessionRepository: FindsSessions = {
         findAll: () => Promise.resolve([]),
-        findById: (/* _id: string */) => { throw new Error("any random error")}
+        findById: (/* _id: string */) => {
+          throw new Error("any random error")
+        }
       }
       await findASessionHandler(sessionRepository)(request, responseLike, noop)
 

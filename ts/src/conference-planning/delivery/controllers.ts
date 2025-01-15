@@ -12,19 +12,19 @@ export const findASessionHandler: (x: FindsSessions) => express.RequestHandler
     = findsSessions => async (req, res) => {
       const id = req.params.id
       // TODO: AkS: Add some tests
-    if (!id) {
+      if (!id) {
         res.status(400).send("missing param")
         return
-    }
-    try {
+      }
+      try {
         const s = await findsSessions.findById(id)
         res.status(200).send(s)
         return
-    } catch (error) {
+      } catch (_: unknown) {
         res.status(500).send("Internal server error")
-    }
+      }
 
-}
+    }
 
 export const addASessionHandler: (x: CreatesSessions) => express.RequestHandler
     = (service: CreatesSessions) => async (req, res) => {
