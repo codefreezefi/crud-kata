@@ -19,10 +19,11 @@ describe('Magic', () => {
         await request(app)
             .get('/health-check')
             .expect(200)
-
     })
 
-    it.skip('can create a session', async () => {
+    it('can create a session', async () => {
+        // setup the database to be empty
+         // -> I should be able to start the application with my fake DB
         // POST call to create a session with session details
         const id = v4();
         const sessionInformation = {title: 'First session', id}
