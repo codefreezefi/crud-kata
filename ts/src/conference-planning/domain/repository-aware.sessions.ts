@@ -11,10 +11,12 @@ export class RepositoryAwareSessions implements CreatesSessions, FindsSessions {
     }
     await this.sessionRepository.addSession(session)
   }
+
   async findById(id: string): Promise<Session> {
     return this.sessionRepository.findById(id)
   }
-  async findAll(): Promise<Session[]>{
+
+  async findAll(): Promise<Session[]> {
     return this.sessionRepository.findAll()
   }
 }
